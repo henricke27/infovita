@@ -14,6 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
 public class EquipamentoService {
+
+    private final EstabelecimentoEquipamentoService estabelecimentoEquipamentoService;
     private final EquipamentoRepository equipamentoRepository;
 
     public Equipamento findById(Long id){
@@ -30,7 +32,9 @@ public class EquipamentoService {
     }
 
     public void deleteById(Long id){
-        equipamentoRepository.delete(findById(id));
+        Equipamento equipamento = findById(id);
+        estabelecimentoEquipamentoService.deleteByEquipamento(equipamento);
+        equipamentoRepository.delete(equipamento);
     }
 
     public void update(Equipamento equipamento){

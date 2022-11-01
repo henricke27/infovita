@@ -1,7 +1,8 @@
 package br.edu.ifpi.infovita.controller;
 
 import br.edu.ifpi.infovita.domain.Equipamento;
-import br.edu.ifpi.infovita.domain.Estabelecimento;
+import br.edu.ifpi.infovita.dto.equipamento.EquipamentoPostRequestBody;
+import br.edu.ifpi.infovita.dto.equipamento.EquipamentoPutRequestBody;
 import br.edu.ifpi.infovita.service.EquipamentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,13 +24,22 @@ public class EquipamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<Equipamento> save(@RequestBody Equipamento equipamento){
-        return new ResponseEntity<>(equipamentoService.save(equipamento), HttpStatus.CREATED);
+    public ResponseEntity<Equipamento> save(@RequestBody EquipamentoPostRequestBody equipamento){
+        Equipamento equipamentoToBeSaved = Equipamento.builder()
+                .nome(equipamento.getNome())
+                .build();
+
+        return new ResponseEntity<>(equipamentoService.save(equipamentoToBeSaved), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody Equipamento equipamento){
-        equipamentoService.update(equipamento);
+    public ResponseEntity<Void> update(@RequestBody EquipamentoPutRequestBody equipamento){
+        Equipamento equipamentoToBeUpdated = Equipamento.builder()
+                .id(equipamento.getId())
+                .nome(equipamento.getNome())
+                .build();
+
+        equipamentoService.update(equipamentoToBeUpdated);
         return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }
 

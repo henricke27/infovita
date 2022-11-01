@@ -9,7 +9,6 @@ spring:
     hibernate:
       ddl-auto: create-drop
 
-server:
   error:
     include:
       stack-trace: on-param

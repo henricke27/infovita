@@ -1,22 +1,23 @@
 package br.edu.ifpi.infovita.domain;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Equipamento {
+public class EstabelecimentoEquipamento {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
-    @OneToMany(mappedBy = "equipamento") @JsonIgnore
-    private List<EstabelecimentoEquipamento> estabelecimentos = new ArrayList<>();
+    @ManyToOne @JsonIgnore
+    private Estabelecimento estabelecimento;
+    @ManyToOne @JsonIgnore
+    private Equipamento equipamento;
+    private Integer existentes;
+    private Integer funcionais;
+    private Boolean sus;
 }

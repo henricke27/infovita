@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EquipamentoRepository extends JpaRepository<Equipamento, Long> {
 
+//    @Query(value = "SELECT e FROM Equipamento e JOIN FETCH e.estabelecimentos ee WHERE ee.estabelecimento = ?1")
+//    List<Equipamento> findAllByEstabelecimento(Estabelecimento estabelecimento);
 }
