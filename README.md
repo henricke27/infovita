@@ -7,7 +7,7 @@ https://infovita.herokuapp.com
 ## Obter estabelecimento: `GET /estabelecimento/{id}`
 Endpoint que retorna um estabelecimento de acordo com o ID fornecido, junto com uma coleção de equipamentos associados a esta unidade:
 
-`204: OK` Com um corpo seguindo este formato de exemplo:  
+`200: OK` Com um corpo seguindo este formato de exemplo:  
 
 ```json
 {
@@ -96,7 +96,7 @@ Como resposta, é esperado:
 ## Obter equipamento: `GET /equipamento/{id}`
 Endpoint que retorna um equipamento de acordo com o ID fornecido na URL. Como resposta, é esperado: 
 
-`204: OK` Com um corpo seguindo este formato de exemplo: 
+`200: OK` Com um corpo seguindo este formato de exemplo: 
 ```json
 {
   "id": 1,
