@@ -18,6 +18,12 @@ public class EquipamentoController {
 
     private final EquipamentoService equipamentoService;
 
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Equipamento> findById(@PathVariable Long id){
+        return new ResponseEntity<>(equipamentoService.findById(id), HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<Page<Equipamento>> findAll(Pageable pageable){
         return new ResponseEntity<>(equipamentoService.findAll(pageable), HttpStatus.OK);
@@ -26,6 +32,7 @@ public class EquipamentoController {
     @PostMapping
     public ResponseEntity<Equipamento> save(@RequestBody EquipamentoPostRequestBody equipamento){
         Equipamento equipamentoToBeSaved = Equipamento.builder()
+                .id(equipamento.getId())
                 .nome(equipamento.getNome())
                 .build();
 

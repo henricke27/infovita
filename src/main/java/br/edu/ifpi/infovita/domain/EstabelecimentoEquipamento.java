@@ -19,5 +19,4 @@ public class EstabelecimentoEquipamento {
     private Equipamento equipamento;
     private Integer existentes;
     private Integer funcionais;
-    private Boolean sus;
 }

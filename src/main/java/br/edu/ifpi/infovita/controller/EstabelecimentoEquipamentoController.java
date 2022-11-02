@@ -3,8 +3,8 @@ package br.edu.ifpi.infovita.controller;
 import br.edu.ifpi.infovita.domain.Equipamento;
 import br.edu.ifpi.infovita.domain.Estabelecimento;
 import br.edu.ifpi.infovita.domain.EstabelecimentoEquipamento;
-import br.edu.ifpi.infovita.dto.EstabelecimentoEquipamentoDeleteRequest;
-import br.edu.ifpi.infovita.dto.EstabelecimentoEquipamentoPostRequest;
+import br.edu.ifpi.infovita.dto.estabelecimentoEquipamento.EstabelecimentoEquipamentoDeleteRequest;
+import br.edu.ifpi.infovita.dto.estabelecimentoEquipamento.EstabelecimentoEquipamentoPostRequest;
 import br.edu.ifpi.infovita.service.EquipamentoService;
 import br.edu.ifpi.infovita.service.EstabelecimentoEquipamentoService;
 import br.edu.ifpi.infovita.service.EstabelecimentoService;
@@ -32,7 +32,6 @@ public class EstabelecimentoEquipamentoController {
         EstabelecimentoEquipamento estabelecimentoEquipamento = EstabelecimentoEquipamento.builder()
                 .funcionais(eepr.getFuncionais())
                 .existentes(eepr.getExistentes())
-                .sus(eepr.getSus())
                 .estabelecimento(estabelecimento)
                 .equipamento(equipamento)
                 .build();

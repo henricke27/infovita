@@ -21,6 +21,7 @@ public class Estabelecimento {
     private String nomeEmpresarial;
     private String cnes;
     private String cnpj;
+    private Boolean sus;
 
     @OneToOne(cascade = CascadeType.ALL)
     private EnderecoEstabelecimento endereco;

@@ -1,8 +1,10 @@
 package br.edu.ifpi.infovita.service;
 
 import br.edu.ifpi.infovita.domain.Estabelecimento;
+import br.edu.ifpi.infovita.repository.EstabelecimentoEquipamentoRepository;
 import br.edu.ifpi.infovita.repository.EstabelecimentoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EstabelecimentoService {
     private final EstabelecimentoRepository estabelecimentoRepository;
+    private final EstabelecimentoEquipamentoRepository estabelecimentoEquipamentoRepository;
 
     public Estabelecimento findById(Long id){
         return estabelecimentoRepository.findById(id)
@@ -26,28 +29,25 @@ public class EstabelecimentoService {
         return estabelecimentoRepository.findAll();
     }
 
+    public Page<Estabelecimento> findAllPageable(Pageable pageable){
+        return estabelecimentoRepository.findAll(pageable);
+    }
+
     public Estabelecimento saveWithAddressCompose(Estabelecimento estabelecimento){
         return estabelecimentoRepository.save(estabelecimento);
     }
 
     public void deleteById(Long id){
-        estabelecimentoRepository.delete(findById(id));
+        Estabelecimento estabelecimento = findById(id);
+        estabelecimentoEquipamentoRepository.deleteByEstabelecimento(estabelecimento);
+        estabelecimentoRepository.delete(estabelecimento);
     }
 
     public void updateWithAddressCompose(Estabelecimento estabelecimento){
         Estabelecimento estabelecimentoFound = findById(estabelecimento.getId());
         estabelecimento.getEndereco().setId(estabelecimentoFound.getEndereco().getId());
 
-        Estabelecimento estabelecimentoToBeUpdated = Estabelecimento.builder()
-                .id(estabelecimentoFound.getId())
-                .nome(estabelecimento.getNome())
-                .nomeEmpresarial(estabelecimento.getNomeEmpresarial())
-                .cnes(estabelecimento.getCnes())
-                .cnpj(estabelecimento.getCnpj())
-                .endereco(estabelecimento.getEndereco())
-                .build();
-
-        estabelecimentoRepository.save(estabelecimentoToBeUpdated);
+        estabelecimentoRepository.save(estabelecimento);
     }
 
 }

@@ -1,6 +1,8 @@
 package br.edu.ifpi.infovita.dto.estabelecimento;
 
+import br.edu.ifpi.infovita.dto.enderecoEstabelecimento.EnderecoEstabelecimentoResponseBody;
 import br.edu.ifpi.infovita.dto.equipamento.EquipamentoResponseBody;
+import br.edu.ifpi.infovita.dto.estabelecimentoEquipamento.EstabelecimentoEquipamentoResponseBody;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +21,7 @@ public class EstabelecimentoResponseBody {
     private String nomeEmpresarial;
     private String cnes;
     private String cnpj;
+    private Boolean sus;
     private EnderecoEstabelecimentoResponseBody endereco;
-    private List<EquipamentoResponseBody> equipamentos = new ArrayList<>();
+    private List<EstabelecimentoEquipamentoResponseBody> equipamentos = new ArrayList<>();
 }

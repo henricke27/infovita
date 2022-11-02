@@ -1,5 +1,6 @@
 package br.edu.ifpi.infovita.dto.estabelecimento;
 
+import br.edu.ifpi.infovita.dto.enderecoEstabelecimento.EnderecoEstabelecimentoRequestBody;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class EstabelecimentoPutRequestBody {
     private String nomeEmpresarial;
     private String cnes;
     private String cnpj;
-    private EnderecoEstabelecimentoResponseBody endereco;
+    private Boolean sus;
+    private EnderecoEstabelecimentoRequestBody endereco;
 }

@@ -2,14 +2,16 @@ package br.edu.ifpi.infovita.controller;
 
 import br.edu.ifpi.infovita.domain.EnderecoEstabelecimento;
 import br.edu.ifpi.infovita.domain.Estabelecimento;
-import br.edu.ifpi.infovita.dto.equipamento.EquipamentoResponseBody;
-import br.edu.ifpi.infovita.dto.estabelecimento.EnderecoEstabelecimentoResponseBody;
-import br.edu.ifpi.infovita.dto.estabelecimento.EstabelecimentoResponseBody;
+import br.edu.ifpi.infovita.dto.enderecoEstabelecimento.EnderecoEstabelecimentoRequestBody;
+import br.edu.ifpi.infovita.dto.enderecoEstabelecimento.EnderecoEstabelecimentoResponseBody;
 import br.edu.ifpi.infovita.dto.estabelecimento.EstabelecimentoPostRequestBody;
 import br.edu.ifpi.infovita.dto.estabelecimento.EstabelecimentoPutRequestBody;
-import br.edu.ifpi.infovita.repository.EstabelecimentoRepository;
+import br.edu.ifpi.infovita.dto.estabelecimento.EstabelecimentoResponseBody;
+import br.edu.ifpi.infovita.dto.estabelecimentoEquipamento.EstabelecimentoEquipamentoResponseBody;
 import br.edu.ifpi.infovita.service.EstabelecimentoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,37 +28,30 @@ import java.util.stream.Collectors;
 public class EstabelecimentoController {
 
     private final EstabelecimentoService estabelecimentoService;
-    private final EstabelecimentoRepository estabelecimentoRepository;
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Estabelecimento> findById(@PathVariable Long id){
-        return new ResponseEntity<>(estabelecimentoService.findById(id), HttpStatus.OK);
+    public ResponseEntity<EstabelecimentoResponseBody> findById(@PathVariable Long id){
+        Estabelecimento estabelecimento = estabelecimentoService.findById(id);
+        EstabelecimentoResponseBody estabelecimentoResponseBody = convertEstabelecimentoToResponseDto(estabelecimento);
+
+        return new ResponseEntity<>(estabelecimentoResponseBody, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<EstabelecimentoResponseBody>> findAll(){
-        List<Estabelecimento> estabelecimentos = estabelecimentoRepository.findAll();
-        List<EstabelecimentoResponseBody> estabelecimentoResponseBodies = estabelecimentos.stream().map(estabelecimento -> EstabelecimentoResponseBody.builder()
-                        .id(estabelecimento.getId())
-                        .nome(estabelecimento.getNome())
-                        .nomeEmpresarial(estabelecimento.getNomeEmpresarial())
-                        .cnes(estabelecimento.getCnes())
-                        .cnpj(estabelecimento.getCnpj())
-                        .endereco(EnderecoEstabelecimentoResponseBody.builder()
-                                .placeId(estabelecimento.getEndereco().getPlaceId())
-                                .numero(estabelecimento.getEndereco().getNumero())
-                                .bairro(estabelecimento.getEndereco().getBairro())
-                                .complemento(estabelecimento.getEndereco().getComplemento())
-                                .logradouro(estabelecimento.getEndereco().getLogradouro())
-                                .municipio(estabelecimento.getEndereco().getMunicipio())
-                                .build())
-                        .equipamentos(estabelecimento.getEquipamentos().stream()
-                                .map(estabelecimentoEquipamento -> EquipamentoResponseBody.builder()
-                                        .id(estabelecimentoEquipamento.getEquipamento().getId())
-                                        .nome(estabelecimentoEquipamento.getEquipamento().getNome())
-                                        .build())
-                                .collect(Collectors.toList()))
-                        .build())
+        List<Estabelecimento> estabelecimentos = estabelecimentoService.findAll();
+        List<EstabelecimentoResponseBody> estabelecimentoResponseBodies = estabelecimentos.stream()
+                .map(this::convertEstabelecimentoToResponseDto)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(estabelecimentoResponseBodies, HttpStatus.OK);
+    }
+
+    @GetMapping("/on-page")
+    public ResponseEntity<List<EstabelecimentoResponseBody>> findAllPageable(Pageable pageable){
+        Page<Estabelecimento> estabelecimentos = estabelecimentoService.findAllPageable(pageable);
+        List<EstabelecimentoResponseBody> estabelecimentoResponseBodies = estabelecimentos.getContent().stream()
+                .map(this::convertEstabelecimentoToResponseDto)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(estabelecimentoResponseBodies, HttpStatus.OK);
@@ -64,7 +59,7 @@ public class EstabelecimentoController {
 
     @PostMapping
     public ResponseEntity<Estabelecimento> save(@RequestBody EstabelecimentoPostRequestBody estabelecimento){
-        EnderecoEstabelecimentoResponseBody enderecoDto = estabelecimento.getEndereco();
+        EnderecoEstabelecimentoRequestBody enderecoDto = estabelecimento.getEndereco();
         EnderecoEstabelecimento enderecoToBeSaved = EnderecoEstabelecimento.builder()
                 .placeId(enderecoDto.getPlaceId())
                 .numero(enderecoDto.getNumero())
@@ -79,6 +74,7 @@ public class EstabelecimentoController {
                 .nomeEmpresarial(estabelecimento.getNomeEmpresarial())
                 .cnpj(estabelecimento.getCnpj())
                 .cnes(estabelecimento.getCnes())
+                .sus(estabelecimento.getSus())
                 .endereco(enderecoToBeSaved)
                 .equipamentos(new ArrayList<>())
                 .build();
@@ -88,8 +84,8 @@ public class EstabelecimentoController {
 
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody EstabelecimentoPutRequestBody estabelecimento){
-        EnderecoEstabelecimentoResponseBody enderecoDto = estabelecimento.getEndereco();
-        EnderecoEstabelecimento enderecoToBeSaved = EnderecoEstabelecimento.builder()
+        EnderecoEstabelecimentoRequestBody enderecoDto = estabelecimento.getEndereco();
+        EnderecoEstabelecimento enderecoToBeUpdated = EnderecoEstabelecimento.builder()
                 .placeId(enderecoDto.getPlaceId())
                 .numero(enderecoDto.getNumero())
                 .bairro(enderecoDto.getBairro())
@@ -104,7 +100,8 @@ public class EstabelecimentoController {
                 .nomeEmpresarial(estabelecimento.getNomeEmpresarial())
                 .cnpj(estabelecimento.getNomeEmpresarial())
                 .cnes(estabelecimento.getCnes())
-                .endereco(enderecoToBeSaved)
+                .sus(estabelecimento.getSus())
+                .endereco(enderecoToBeUpdated)
                 .build();
 
         estabelecimentoService.updateWithAddressCompose(estabelecimentoToBeUpdated);
@@ -117,4 +114,30 @@ public class EstabelecimentoController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    private EstabelecimentoResponseBody convertEstabelecimentoToResponseDto(Estabelecimento estabelecimento){
+        return EstabelecimentoResponseBody.builder()
+                .id(estabelecimento.getId())
+                .nome(estabelecimento.getNome())
+                .nomeEmpresarial(estabelecimento.getNomeEmpresarial())
+                .cnes(estabelecimento.getCnes())
+                .cnpj(estabelecimento.getCnpj())
+                .sus(estabelecimento.getSus())
+                .endereco(EnderecoEstabelecimentoResponseBody.builder()
+                        .placeId(estabelecimento.getEndereco().getPlaceId())
+                        .numero(estabelecimento.getEndereco().getNumero())
+                        .bairro(estabelecimento.getEndereco().getBairro())
+                        .complemento(estabelecimento.getEndereco().getComplemento())
+                        .logradouro(estabelecimento.getEndereco().getLogradouro())
+                        .municipio(estabelecimento.getEndereco().getMunicipio())
+                        .build())
+                .equipamentos(estabelecimento.getEquipamentos().stream()
+                        .map(estabelecimentoEquipamento -> EstabelecimentoEquipamentoResponseBody.builder()
+                                .id(estabelecimentoEquipamento.getEquipamento().getId())
+                                .nome(estabelecimentoEquipamento.getEquipamento().getNome())
+                                .existentes(estabelecimentoEquipamento.getExistentes())
+                                .funcionais(estabelecimentoEquipamento.getFuncionais())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
+    }
 }

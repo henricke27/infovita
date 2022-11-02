@@ -1,4 +1,4 @@
-package br.edu.ifpi.infovita.dto;
+package br.edu.ifpi.infovita.dto.estabelecimentoEquipamento;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EstabelecimentoEquipamentoPostRequest {
+public class EstabelecimentoEquipamentoDeleteRequest {
     private Long equipamento;
     private Long estabelecimento;
-    private Integer existentes;
-    private Integer funcionais;
-    private Boolean sus;
 }

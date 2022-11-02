@@ -28,6 +28,9 @@ public class EquipamentoService {
     }
 
     public Equipamento save(Equipamento equipamento){
+        equipamentoRepository.findById(equipamento.getId())
+                .ifPresent((e) -> {throw new ResponseStatusException(HttpStatus.CONFLICT, "Equipamento de ID " + e.getId() + " já cadastrado!");});
+
         return equipamentoRepository.save(equipamento);
     }
 
@@ -38,14 +41,8 @@ public class EquipamentoService {
     }
 
     public void update(Equipamento equipamento){
-        Equipamento equipamentoSaved = findById(equipamento.getId());
-
-        Equipamento equipamentoTobeUpdated = Equipamento.builder()
-                .id(equipamentoSaved.getId())
-                .nome(equipamento.getNome())
-                .build();
-
-        equipamentoRepository.save(equipamentoTobeUpdated);
+        findById(equipamento.getId());
+        equipamentoRepository.save(equipamento);
     }
 
 }

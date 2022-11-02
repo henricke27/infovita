@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EquipamentoPostRequestBody {
+    private Long id;
     private String nome;
 }

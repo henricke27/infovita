@@ -1,4 +1,4 @@
-package br.edu.ifpi.infovita.dto.estabelecimento;
+package br.edu.ifpi.infovita.dto.enderecoEstabelecimento;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
