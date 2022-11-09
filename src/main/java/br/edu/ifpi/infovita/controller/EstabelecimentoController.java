@@ -29,10 +29,20 @@ public class EstabelecimentoController {
 
     private final EstabelecimentoService estabelecimentoService;
 
+    @GetMapping(path = "/find-by-exame/{id}")
+    public ResponseEntity<List<EstabelecimentoResponseBody>> findAllByExame(@PathVariable Long id){
+        List<Estabelecimento> estabelecimentos = estabelecimentoService.findAllByExame(id);
+        List<EstabelecimentoResponseBody> estabelecimentoResponseBodies = estabelecimentos.stream()
+                .map(EstabelecimentoResponseBody::convertEstabelecimentoToResponseDto)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(estabelecimentoResponseBodies, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<EstabelecimentoResponseBody> findById(@PathVariable Long id){
         Estabelecimento estabelecimento = estabelecimentoService.findById(id);
-        EstabelecimentoResponseBody estabelecimentoResponseBody = convertEstabelecimentoToResponseDto(estabelecimento);
+        EstabelecimentoResponseBody estabelecimentoResponseBody = EstabelecimentoResponseBody.convertEstabelecimentoToResponseDto(estabelecimento);
 
         return new ResponseEntity<>(estabelecimentoResponseBody, HttpStatus.OK);
     }
@@ -41,7 +51,7 @@ public class EstabelecimentoController {
     public ResponseEntity<List<EstabelecimentoResponseBody>> findAll(){
         List<Estabelecimento> estabelecimentos = estabelecimentoService.findAll();
         List<EstabelecimentoResponseBody> estabelecimentoResponseBodies = estabelecimentos.stream()
-                .map(this::convertEstabelecimentoToResponseDto)
+                .map(EstabelecimentoResponseBody::convertEstabelecimentoToResponseDto)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(estabelecimentoResponseBodies, HttpStatus.OK);
@@ -51,14 +61,14 @@ public class EstabelecimentoController {
     public ResponseEntity<List<EstabelecimentoResponseBody>> findAllPageable(Pageable pageable){
         Page<Estabelecimento> estabelecimentos = estabelecimentoService.findAllPageable(pageable);
         List<EstabelecimentoResponseBody> estabelecimentoResponseBodies = estabelecimentos.getContent().stream()
-                .map(this::convertEstabelecimentoToResponseDto)
+                .map(EstabelecimentoResponseBody::convertEstabelecimentoToResponseDto)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(estabelecimentoResponseBodies, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Estabelecimento> save(@RequestBody EstabelecimentoPostRequestBody estabelecimento){
+    public ResponseEntity<EstabelecimentoResponseBody> save(@RequestBody EstabelecimentoPostRequestBody estabelecimento){
         EnderecoEstabelecimentoRequestBody enderecoDto = estabelecimento.getEndereco();
         EnderecoEstabelecimento enderecoToBeSaved = EnderecoEstabelecimento.builder()
                 .placeId(enderecoDto.getPlaceId())
@@ -79,7 +89,10 @@ public class EstabelecimentoController {
                 .equipamentos(new ArrayList<>())
                 .build();
 
-        return new ResponseEntity<>(estabelecimentoService.saveWithAddressCompose(estabelecimentoToBeSave), HttpStatus.CREATED);
+        Estabelecimento estabelecimentoSaved = estabelecimentoService.saveWithAddressCompose(estabelecimentoToBeSave);
+        EstabelecimentoResponseBody estabelecimentoResponseBody = EstabelecimentoResponseBody.convertEstabelecimentoToResponseDto(estabelecimentoSaved);
+
+        return new ResponseEntity<>(estabelecimentoResponseBody, HttpStatus.CREATED);
     }
 
     @PutMapping
@@ -114,30 +127,4 @@ public class EstabelecimentoController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    private EstabelecimentoResponseBody convertEstabelecimentoToResponseDto(Estabelecimento estabelecimento){
-        return EstabelecimentoResponseBody.builder()
-                .id(estabelecimento.getId())
-                .nome(estabelecimento.getNome())
-                .nomeEmpresarial(estabelecimento.getNomeEmpresarial())
-                .cnes(estabelecimento.getCnes())
-                .cnpj(estabelecimento.getCnpj())
-                .sus(estabelecimento.getSus())
-                .endereco(EnderecoEstabelecimentoResponseBody.builder()
-                        .placeId(estabelecimento.getEndereco().getPlaceId())
-                        .numero(estabelecimento.getEndereco().getNumero())
-                        .bairro(estabelecimento.getEndereco().getBairro())
-                        .complemento(estabelecimento.getEndereco().getComplemento())
-                        .logradouro(estabelecimento.getEndereco().getLogradouro())
-                        .municipio(estabelecimento.getEndereco().getMunicipio())
-                        .build())
-                .equipamentos(estabelecimento.getEquipamentos().stream()
-                        .map(estabelecimentoEquipamento -> EstabelecimentoEquipamentoResponseBody.builder()
-                                .id(estabelecimentoEquipamento.getEquipamento().getId())
-                                .nome(estabelecimentoEquipamento.getEquipamento().getNome())
-                                .existentes(estabelecimentoEquipamento.getExistentes())
-                                .funcionais(estabelecimentoEquipamento.getFuncionais())
-                                .build())
-                        .collect(Collectors.toList()))
-                .build();
-    }
 }

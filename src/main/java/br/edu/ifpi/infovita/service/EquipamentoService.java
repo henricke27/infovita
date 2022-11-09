@@ -2,6 +2,7 @@ package br.edu.ifpi.infovita.service;
 
 import br.edu.ifpi.infovita.domain.Equipamento;
 import br.edu.ifpi.infovita.repository.EquipamentoRepository;
+import br.edu.ifpi.infovita.repository.EstabelecimentoEquipamentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class EquipamentoService {
 
-    private final EstabelecimentoEquipamentoService estabelecimentoEquipamentoService;
+    private final EstabelecimentoEquipamentoRepository estabelecimentoEquipamentoRepository;
     private final EquipamentoRepository equipamentoRepository;
 
     public Equipamento findById(Long id){
@@ -28,15 +29,12 @@ public class EquipamentoService {
     }
 
     public Equipamento save(Equipamento equipamento){
-        equipamentoRepository.findById(equipamento.getId())
-                .ifPresent((e) -> {throw new ResponseStatusException(HttpStatus.CONFLICT, "Equipamento de ID " + e.getId() + " já cadastrado!");});
-
         return equipamentoRepository.save(equipamento);
     }
 
     public void deleteById(Long id){
         Equipamento equipamento = findById(id);
-        estabelecimentoEquipamentoService.deleteByEquipamento(equipamento);
+        estabelecimentoEquipamentoRepository.deleteByEquipamento(equipamento);
         equipamentoRepository.delete(equipamento);
     }
 

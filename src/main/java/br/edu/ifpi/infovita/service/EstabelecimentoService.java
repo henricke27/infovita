@@ -20,6 +20,10 @@ public class EstabelecimentoService {
     private final EstabelecimentoRepository estabelecimentoRepository;
     private final EstabelecimentoEquipamentoRepository estabelecimentoEquipamentoRepository;
 
+    public List<Estabelecimento> findAllByExame(Long idExame){
+        return estabelecimentoRepository.findAllByExame(idExame);
+    }
+
     public Estabelecimento findById(Long id){
         return estabelecimentoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Estabelecimento não encontrado!"));

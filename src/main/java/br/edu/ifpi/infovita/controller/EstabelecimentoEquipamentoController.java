@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @RestController
-@RequestMapping
+@RequestMapping("/estabelecimento")
 @EnableWebMvc
 @RequiredArgsConstructor
 public class EstabelecimentoEquipamentoController {
@@ -24,7 +24,7 @@ public class EstabelecimentoEquipamentoController {
     private final EstabelecimentoService estabelecimentoService;
     private final EquipamentoService equipamentoService;
 
-    @PostMapping(path = "/merge")
+    @PostMapping(path = "/add-equipamento")
     public ResponseEntity<Void> addEquipamentToStableshiment(@RequestBody EstabelecimentoEquipamentoPostRequest eepr){
         Estabelecimento estabelecimento = estabelecimentoService.findById(eepr.getEstabelecimento());
         Equipamento equipamento = equipamentoService.findById(eepr.getEquipamento());
@@ -40,7 +40,7 @@ public class EstabelecimentoEquipamentoController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/unmerge")
+    @DeleteMapping("/remove-equipamento")
     public ResponseEntity<Void> removeEquipamentToStableshiment(@RequestBody EstabelecimentoEquipamentoDeleteRequest eedr){
         Estabelecimento estabelecimento = estabelecimentoService.findById(eedr.getEstabelecimento());
         Equipamento equipamento = equipamentoService.findById(eedr.getEquipamento());

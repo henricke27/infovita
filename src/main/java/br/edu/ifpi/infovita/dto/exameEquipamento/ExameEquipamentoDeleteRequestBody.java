@@ -1,4 +1,5 @@
-package br.edu.ifpi.infovita.dto.equipamento;
+package br.edu.ifpi.infovita.dto.exameEquipamento;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EquipamentoPostRequestBody {
-    private String nome;
+public class ExameEquipamentoDeleteRequestBody {
+    private Long exame;
+    private Long equipamento;
 }
