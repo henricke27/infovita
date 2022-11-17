@@ -9,6 +9,10 @@ spring:
     hibernate:
       ddl-auto: create-drop
 
+  jackson:
+    serialization:
+      WRITE-DATES-AS-TIMESTAMPS: true
+
 error:
   include:
     stack-trace: on-param
