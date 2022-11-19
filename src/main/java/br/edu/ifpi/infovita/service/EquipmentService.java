@@ -1,7 +1,7 @@
 package br.edu.ifpi.infovita.service;
 
 import br.edu.ifpi.infovita.domain.Equipment;
-import br.edu.ifpi.infovita.exception.BadRequestException;
+import br.edu.ifpi.infovita.exception.EquipmentNotFoundException;
 import br.edu.ifpi.infovita.repository.EquipmentRepository;
 import br.edu.ifpi.infovita.repository.EstablishmentEquipmentRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class EquipmentService {
 
     public Equipment findById(Long id){
         return equipmentRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Equipment not found!"));
+                .orElseThrow(() -> new EquipmentNotFoundException("Equipment not found!"));
     }
 
     public Page<Equipment> findAll(Pageable pageable){

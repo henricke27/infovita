@@ -1,10 +1,17 @@
 package br.edu.ifpi.infovita.handler.decription;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
-@Getter
-@SuperBuilder
-public class BadRequestExceptionDescription extends GeneralExceptionDescription {
+import java.time.LocalDateTime;
 
+@Data
+@SuperBuilder
+@AllArgsConstructor
+public class BadRequestExceptionDescription {
+    private LocalDateTime timestamps;
+    private String exception;
+    private String message;
+    private Integer status;
 }

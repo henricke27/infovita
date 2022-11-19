@@ -2,6 +2,7 @@ package br.edu.ifpi.infovita.service;
 
 import br.edu.ifpi.infovita.domain.Establishment;
 import br.edu.ifpi.infovita.exception.BadRequestException;
+import br.edu.ifpi.infovita.exception.EstablishmentNotFoundException;
 import br.edu.ifpi.infovita.repository.EstablishmentEquipmentRepository;
 import br.edu.ifpi.infovita.repository.EstablishmentRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class EstablishmentService {
     private final EstablishmentRepository establishmentRepository;
@@ -26,7 +28,7 @@ public class EstablishmentService {
 
     public Establishment findById(Long id){
         return establishmentRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Establishment not found!"));
+                .orElseThrow(() -> new EstablishmentNotFoundException("Establishment not found!"));
     }
 
     public List<Establishment> findAll(){

@@ -13,6 +13,7 @@ import java.util.Optional;
 @Repository
 public interface EstablishmentEquipmentRepository extends JpaRepository<EstablishmentEquipment, Long> {
     void deleteByEquipment(Equipment equipment);
+
     void deleteByEstablishment(Establishment establishment);
 
     @Modifying

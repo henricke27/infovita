@@ -3,6 +3,7 @@ package br.edu.ifpi.infovita.service;
 import br.edu.ifpi.infovita.domain.Equipment;
 import br.edu.ifpi.infovita.domain.Establishment;
 import br.edu.ifpi.infovita.domain.EstablishmentEquipment;
+import br.edu.ifpi.infovita.exception.BadRequestException;
 import br.edu.ifpi.infovita.repository.EstablishmentEquipmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class EstablishmentEquipmentService {
                 .getId());
 
         findByEstablishmentAndEquipment(establishment.getId(), equipment.getId())
-                .ifPresent((ee) -> {throw new ResponseStatusException(HttpStatus.CONFLICT);});
+                .ifPresent((ee) -> {throw new BadRequestException("Establishment has this equipment");});
 
         establishmentEquipment.setEstablishment(establishment);
         establishmentEquipment.setEquipment(equipment);

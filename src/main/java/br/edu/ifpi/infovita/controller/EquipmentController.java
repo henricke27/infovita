@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class EquipmentController {
     }
 
     @PostMapping
-    public ResponseEntity<EquipmentResponseBody> save(@RequestBody EquipmentPostRequestBody equipment){
+    public ResponseEntity<EquipmentResponseBody> save(@RequestBody @Valid EquipmentPostRequestBody equipment){
         Equipment equipmentToBeSaved = Equipment.builder()
                 .name(equipment.getName())
                 .build();
@@ -52,10 +53,10 @@ public class EquipmentController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody EquipmentPutRequestBody equipamento){
+    public ResponseEntity<Void> update(@RequestBody @Valid EquipmentPutRequestBody equipment){
         Equipment equipmentToBeUpdated = Equipment.builder()
-                .id(equipamento.getId())
-                .name(equipamento.getName())
+                .id(equipment.getId())
+                .name(equipment.getName())
                 .build();
 
         equipmentService.update(equipmentToBeUpdated);

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,7 +67,7 @@ public class EstablishmentController {
     }
 
     @PostMapping
-    public ResponseEntity<EstablishmentResponseBody> save(@RequestBody EstablishmentPostRequestBody establishment){
+    public ResponseEntity<EstablishmentResponseBody> save(@RequestBody @Valid EstablishmentPostRequestBody establishment){
         EstablishmentAddressRequestBody addressDto = establishment.getAddress();
         EstablishmentAddress addressToBeSaved = EstablishmentAddress.builder()
                 .placeId(addressDto.getPlaceId())
@@ -94,7 +95,7 @@ public class EstablishmentController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody EstablishmentPutRequestBody establishment){
+    public ResponseEntity<Void> update(@RequestBody @Valid EstablishmentPutRequestBody establishment){
         EstablishmentAddressRequestBody addressDto = establishment.getAddress();
         EstablishmentAddress addressToBeUpdated = EstablishmentAddress.builder()
                 .placeId(addressDto.getPlaceId())
