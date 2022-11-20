@@ -14,7 +14,7 @@ public class EquipmentResponseBody {
     private Long id;
     private String name;
 
-    public static EquipmentResponseBody convertEquipamentToResponseDto(Equipment equipment){
+    public static EquipmentResponseBody convertEquipmentToResponseDto(Equipment equipment){
         return EquipmentResponseBody.builder()
                 .id(equipment.getId())
                 .name(equipment.getName())

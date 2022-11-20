@@ -4,13 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
-
 @Data
 @SuperBuilder
 @AllArgsConstructor
 public class BadRequestExceptionDescription {
-    private LocalDateTime timestamps;
+    private String timestamps;
     private String exception;
     private String message;
     private Integer status;

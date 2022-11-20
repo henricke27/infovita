@@ -5,18 +5,16 @@ import br.edu.ifpi.infovita.domain.Establishment;
 import br.edu.ifpi.infovita.domain.EstablishmentEquipment;
 import br.edu.ifpi.infovita.dto.estabelecimentoEquipamento.EstablishmentEquipmentDeleteRequest;
 import br.edu.ifpi.infovita.dto.estabelecimentoEquipamento.EstablishmentEquipmentPostRequest;
-import br.edu.ifpi.infovita.service.EstablishmentEquipmentService;
+import br.edu.ifpi.infovita.service.establishmentEquipment.EstablishmentEquipmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/establishment")
-@EnableWebMvc
 @RequiredArgsConstructor
 public class EstablishmentEquipmentController {
 

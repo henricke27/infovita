@@ -4,7 +4,7 @@ import br.edu.ifpi.infovita.domain.Equipment;
 import br.edu.ifpi.infovita.dto.equipamento.EquipmentPostRequestBody;
 import br.edu.ifpi.infovita.dto.equipamento.EquipmentPutRequestBody;
 import br.edu.ifpi.infovita.dto.equipamento.EquipmentResponseBody;
-import br.edu.ifpi.infovita.service.EquipmentService;
+import br.edu.ifpi.infovita.service.equipment.EquipmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ public class EquipmentController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<EquipmentResponseBody> findById(@PathVariable Long id){
         Equipment equipment = equipmentService.findById(id);
-        EquipmentResponseBody equipmentResponseBody = EquipmentResponseBody.convertEquipamentToResponseDto(equipment);
+        EquipmentResponseBody equipmentResponseBody = EquipmentResponseBody.convertEquipmentToResponseDto(equipment);
 
         return new ResponseEntity<>(equipmentResponseBody, HttpStatus.OK);
     }
@@ -34,7 +34,7 @@ public class EquipmentController {
     public ResponseEntity<List<EquipmentResponseBody>> findAll(Pageable pageable){
         List<Equipment> equipment = equipmentService.findAll(pageable).getContent();
         List<EquipmentResponseBody> equipmentResponseBodies = equipment.stream()
-                .map(EquipmentResponseBody::convertEquipamentToResponseDto)
+                .map(EquipmentResponseBody::convertEquipmentToResponseDto)
                 .collect(Collectors.toList());
 
         return new ResponseEntity<>(equipmentResponseBodies, HttpStatus.OK);
@@ -47,7 +47,7 @@ public class EquipmentController {
                 .build();
 
         Equipment equipmentSaved = equipmentService.save(equipmentToBeSaved);
-        EquipmentResponseBody equipmentResponseBody = EquipmentResponseBody.convertEquipamentToResponseDto(equipmentSaved);
+        EquipmentResponseBody equipmentResponseBody = EquipmentResponseBody.convertEquipmentToResponseDto(equipmentSaved);
 
         return new ResponseEntity<>(equipmentResponseBody, HttpStatus.CREATED);
     }

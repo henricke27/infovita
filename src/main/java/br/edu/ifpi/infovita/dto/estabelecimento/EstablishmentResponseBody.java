@@ -26,7 +26,7 @@ public class EstablishmentResponseBody {
     private EstablishmentAddressResponseBody address;
     private List<EstablishmentEquipmentResponseBody> equipments = new ArrayList<>();
 
-    public static EstablishmentResponseBody convertEstabelecimentoToResponseDto(Establishment establishment){
+    public static EstablishmentResponseBody convertEstablishmentToResponseDto(Establishment establishment){
         return EstablishmentResponseBody.builder()
                 .id(establishment.getId())
                 .name(establishment.getName())
@@ -43,11 +43,11 @@ public class EstablishmentResponseBody {
                         .city(establishment.getAddress().getCity())
                         .build())
                 .equipments(establishment.getEquipments().stream()
-                        .map(estabelecimentoEquipamento -> EstablishmentEquipmentResponseBody.builder()
-                                .id(estabelecimentoEquipamento.getEquipment().getId())
-                                .name(estabelecimentoEquipamento.getEquipment().getName())
-                                .existing(estabelecimentoEquipamento.getExisting())
-                                .functional(estabelecimentoEquipamento.getFunctional())
+                        .map(establishmentEquipment -> EstablishmentEquipmentResponseBody.builder()
+                                .id(establishmentEquipment.getEquipment().getId())
+                                .name(establishmentEquipment.getEquipment().getName())
+                                .existing(establishmentEquipment.getExisting())
+                                .functional(establishmentEquipment.getFunctional())
                                 .build())
                         .collect(Collectors.toList()))
                 .build();

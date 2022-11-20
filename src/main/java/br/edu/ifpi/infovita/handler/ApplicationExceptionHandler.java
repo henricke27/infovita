@@ -22,7 +22,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     @ExceptionHandler(BadRequestException.class)
     protected ResponseEntity<BadRequestExceptionDescription> badRequestExceptionHandler(BadRequestException ex){
         BadRequestExceptionDescription description = BadRequestExceptionDescription.builder()
-                .timestamps(LocalDateTime.now())
+                .timestamps(LocalDateTime.now().toString())
                 .exception(ex.getClass().getSimpleName())
                 .message(ex.getLocalizedMessage())
                 .status(HttpStatus.BAD_REQUEST.value())
@@ -42,7 +42,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
                 .collect(Collectors.joining("; "));
 
         MethodArgumentNotValidDescription description = MethodArgumentNotValidDescription.builder()
-                .timestamps(LocalDateTime.now())
+                .timestamps(LocalDateTime.now().toString())
                 .exception(ex.getClass().getSimpleName())
                 .message("Exception to be thrown when validation")
                 .status(status.value())

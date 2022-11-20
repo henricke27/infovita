@@ -26,7 +26,7 @@ public class ExamResponseBody {
                 .id(exam.getId())
                 .name(exam.getName())
                 .equipments(exam.getEquipment().stream()
-                        .map(EquipmentResponseBody::convertEquipamentToResponseDto)
+                        .map(EquipmentResponseBody::convertEquipmentToResponseDto)
                         .collect(Collectors.toList()))
                 .build();
     }

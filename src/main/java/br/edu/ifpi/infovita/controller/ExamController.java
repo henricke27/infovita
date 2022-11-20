@@ -6,7 +6,7 @@ import br.edu.ifpi.infovita.dto.exame.ExamPutRequestBody;
 import br.edu.ifpi.infovita.dto.exame.ExamResponseBody;
 import br.edu.ifpi.infovita.dto.exameEquipamento.ExamEquipmentDeleteRequestBody;
 import br.edu.ifpi.infovita.dto.exameEquipamento.ExamEquipmentPostRequestBody;
-import br.edu.ifpi.infovita.service.ExamService;
+import br.edu.ifpi.infovita.service.exam.ExamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
