@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
@@ -66,5 +68,10 @@ public class ExamServiceImpl implements ExamService {
         Equipment equipment = equipmentService.findById(equipmentId);
 
         examRepository.deleteByExamAndEquipment(exam.getId(), equipment.getId());
+    }
+
+    @Override
+    public List<Exam> findAllByName(String name) {
+        return examRepository.findAllByNameContainingIgnoreCase(name);
     }
 }

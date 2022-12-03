@@ -22,6 +22,16 @@ public class EquipmentController {
 
     private final EquipmentService equipmentService;
 
+    @GetMapping(path = "/by-name/{name}")
+    public ResponseEntity<List<EquipmentResponseBody>> findAllByName(@PathVariable String name){
+        List<Equipment> equipment = equipmentService.findAllByName(name);
+        List<EquipmentResponseBody> equipmentResponseBodies = equipment.stream()
+                .map(EquipmentResponseBody::convertEquipmentToResponseDto)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(equipmentResponseBodies, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<EquipmentResponseBody> findById(@PathVariable Long id){
         Equipment equipment = equipmentService.findById(id);

@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
@@ -47,4 +49,8 @@ public class EquipmentServiceImpl implements EquipmentService {
         equipmentRepository.save(equipment);
     }
 
+    @Override
+    public List<Equipment> findAllByName(String name) {
+        return equipmentRepository.findAllByNameContainingIgnoreCase(name);
+    }
 }
