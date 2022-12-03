@@ -60,4 +60,8 @@ public class EstablishmentServiceImpl implements EstablishmentService{
         establishmentRepository.save(establishment);
     }
 
+    @Override
+    public List<Establishment> findAllByName(String name) {
+        return establishmentRepository.findAllByNameContainingIgnoreCase(name);
+    }
 }

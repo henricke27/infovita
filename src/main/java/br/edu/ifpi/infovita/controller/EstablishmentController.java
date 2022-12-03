@@ -26,7 +26,17 @@ public class EstablishmentController {
 
     private final EstablishmentService establishmentService;
 
-    @GetMapping(path = "/find-by-exam/{id}")
+    @GetMapping(path = "/by-name/{name}")
+    public ResponseEntity<List<EstablishmentResponseBody>> findAllByName(@PathVariable String name){
+        List<Establishment> establishments = establishmentService.findAllByName(name);
+        List<EstablishmentResponseBody> establishmentResponseBodies = establishments.stream()
+                .map(EstablishmentResponseBody::convertEstablishmentToResponseDto)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(establishmentResponseBodies, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/by-exam/{id}")
     public ResponseEntity<List<EstablishmentResponseBody>> findAllByExame(@PathVariable Long id){
         List<Establishment> establishments = establishmentService.findAllByExam(id);
         List<EstablishmentResponseBody> establishmentResponseBodies = establishments.stream()

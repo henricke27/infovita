@@ -23,6 +23,16 @@ public class ExamController {
 
     private final ExamService examService;
 
+    @GetMapping(path = "/by-name/{name}")
+    public ResponseEntity<List<ExamResponseBody>> findAllByName(@PathVariable String name){
+        List<Exam> exams = examService.findAllByName(name);
+        List<ExamResponseBody> examResponseBodies = exams.stream()
+                .map(ExamResponseBody::convertExamToResponseDto)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(examResponseBodies, HttpStatus.OK);
+    }
+
     @PostMapping(path = "/add-equipment")
     public ResponseEntity<Void> addEquipamentoToExame(@RequestBody ExamEquipmentPostRequestBody eeprb){
         examService.addEquipmentToExam(eeprb.getExamId(), eeprb.getEquipmentId());
